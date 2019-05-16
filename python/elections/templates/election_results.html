@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'address_form.html' %}
+<ol id="search-results" class="h-events">
+{% for result in results %}
+    <li id="result-{{ loop.index }}" itemscope="itemscope" itemtype="Event">
+        <div class="h-event vevent">{# Old Microformat parsers require this on a DIV element. #}
+        {{ result }}
+        </div><!-- .h-event.vevent -->
+    </li>
+{% endfor %}
+</ol>
+{% endblock %}
