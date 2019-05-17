@@ -1,11 +1,12 @@
 import os
 
 from flask import Flask
-
+from elections import utils
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    app.register_blueprint(utils.bp)
     app.config.from_mapping(
         SECRET_KEY='dev',
     )

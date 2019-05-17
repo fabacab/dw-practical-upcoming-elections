@@ -1,5 +1,5 @@
 """
-Common utility functions.
+Common utility functions, filters, etcetera.
 
 This module stores shared routines that are generic to the project.
 
@@ -14,6 +14,9 @@ module as follows:
 
 No output is good. :)
 """
+import jinja2, flask, datetime
+
+bp = flask.Blueprint('filters', __name__)
 
 def get_ocd_division_id(**kwargs: str) -> str:
     """
@@ -54,3 +57,19 @@ def get_ocd_division_id(**kwargs: str) -> str:
 
     # Return a string of the OCD-IDs we ended up with.
     return ','.join(ocd_ids)
+
+@jinja2.contextfilter
+@bp.app_template_filter('iso8601_to_datetime')
+def ISO8601toDateTime(context, dt_string: str) -> datetime:
+    """
+    Converts an ISO-8601 formatted string into a Python datetime object.
+
+    Args:
+        context: The Jinja template context.
+        dt_string: The ISO-8601 formatted datetime string.
+
+    >>> ISO8601toDateTime(None, '2019-05-10T03:12:45Z') 
+    datetime.datetime(2019, 5, 10, 3, 12, 45)
+    """
+
+    return datetime.datetime.strptime(dt_string, '%Y-%m-%dT%H:%M:%SZ')

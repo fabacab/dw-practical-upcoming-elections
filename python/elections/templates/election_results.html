@@ -1,13 +1,36 @@
 {% extends 'base.html' %}
+
+{% block title %}Search Results for Upcoming Elections{% endblock %}
+
+{% block header %}
+<h1>Upcoming Elections In Your Area</h1>
+{% endblock %}
+
 {% block content %}
-{% include 'address_form.html' %}
 <ol id="search-results" class="h-events">
 {% for result in results %}
-    <li id="result-{{ loop.index }}" itemscope="itemscope" itemtype="Event">
-        <div class="h-event vevent">{# Old Microformat parsers require this on a DIV element. #}
-        {{ result }}
-        </div><!-- .h-event.vevent -->
+    <li id="result-{{ loop.index }}" itemscope="itemscope" itemtype="https://schema.org/Event">
+        <article><div class="h-event vevent">{# Old Microformat parsers require this on a DIV element. #}
+            <header>
+                <h2 class="p-name p-summary summary" itemprop="name">{{ result.description }}</h2>
+                <p>
+                    The election will be held on
+                    <abbr class="dt-start dtstart" title="{{ result.date }}">
+                        {{- (result.date | iso8601_to_datetime).strftime('%A, %B %-d') -}}
+                    </abbr>!
+                    <meta itemprop="startDate" content="{{ result.date }}" />
+                    <a class="u-url url" href="{{ result['polling-place-url'] }}" itemprop="url">Get polling place details.</a>
+                </p>
+            </header>
+            <section>
+                {# TODO: Expose more detail from the API? #}
+            </section>
+            <footer>
+                <p>Election ID: {{ result.id }}</p>
+            </footer>
+        </div><!-- .h-event.vevent --></article>
     </li>
 {% endfor %}
 </ol>
+{% include 'address_form.html' %}
 {% endblock %}

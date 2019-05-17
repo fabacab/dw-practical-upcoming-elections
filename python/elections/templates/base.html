@@ -4,13 +4,24 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<section class="content">
-    <header>
-        {% block header %}{% endblock %}
+<body>
+    <header id="Masthead">
+        <h1><img src="{{ url_for('static', filename='img/logo.transparent.793x250.png') }}" alt="Democracy Works" /></h1>
+        <h2>Upcoming Election Finder</h2>
     </header>
+
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
     {% endfor %}
+
+    <main id="MainContent">
+    {% block header %}{% endblock %}
     {% block content %}{% endblock %}
-</section>
+    </main>
+
+    <footer id="MainFooter">
+        <p>Democracy Works is a 501(c)(3) registered non-profit organization and does not support or oppose any political candidate or party.</p>
+        <p>&copy; 2018 Democracy Works.</p>
+    </footer>
+</body>
 </html>

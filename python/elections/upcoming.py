@@ -1,7 +1,10 @@
-import functools, requests
+"""
+Main module for the Upcoming Elections exercise.
+"""
+
+import functools, requests, datetime
 
 from elections import utils # For OCD-ID generation, etc.
-
 from elections.us_states import postal_abbreviations
 
 from flask import (
@@ -21,10 +24,10 @@ def search():
     """
 
     if request.method == 'POST':
-
         # Prepare the API call.
+        api_url = 'https://api.turbovote.org/elections/upcoming'
         headers = {'Accept': 'application/json'}
-        params = {
+        params  = {
             'district-divisions': utils.get_ocd_division_id(
                 streetAddress=request.form['streetAddress'],
                 extendedStreetAddress=request.form['extendedStreetAddress'],
@@ -35,16 +38,17 @@ def search():
             )
         }
 
-        # Actually perform the API call.
-        response = requests.get('https://api.turbovote.org/elections/upcoming', params=params, headers=headers)
+        # Perform the API call.
+        response = requests.get(api_url, params=params, headers=headers)
         results  = response.json()
+        flash('Upcoming elections: {0:d}'.format(len(results)))
 
-        return render_template(
-            'election_results.html',
+        # Render the results.
+        return render_template('election_results.html',
             states=postal_abbreviations,
 
             # Echo the user's input back into the search form fields.
-            # Jinja2 handles output escaping (a handy Flask default).
+            # TODO: Use Flask-WTF for form handling in the future?
             streetAddress=request.form['streetAddress'],
             extendedStreetAddress=request.form['extendedStreetAddress'],
             addressLocality=request.form['addressLocality'],
@@ -55,4 +59,5 @@ def search():
             results=results
         )
 
+    # This was a GET request, so render the search template instead.
     return render_template('search.html', states=postal_abbreviations)

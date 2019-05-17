@@ -1,43 +1,109 @@
+/**
+ * @group Variables.
+ */
+:root {
+    --main-color: #00A6C5;
+}
+
+/**
+ * @group Typography.
+ */
+@font-face {
+    font-family: "Sofia Pro";
+    src: url('/static/fonts/sofia-pro.woff') format("woff2");
+}
 body {
-  font-family: sans-serif;
+    font-family: "Sofia Pro";
+    color: var(--main-color);
+}
+footer {
+    font-size: smaller;
 }
 
-form {
-  width: 600px;
-  padding: 1em;
-  border: 1px solid #CCC;
+/**
+ * @group Layout.
+ */
+body {
+    max-width: 75vw;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+#Masthead {
+    display: flex;
+}
+#Masthead img {
+    max-width: 300px;
+    border-right: 3px solid var(--main-color);
+    padding-right: .25em;
+}
+#Masthead h2 {
+    margin: .75em 0 0 .25em;
+    font-size: 36px;
+}
+#MainFooter {
+    margin: 4em 0 2em;
 }
 
-form div + div {
-  margin-top: 1em;
+/**
+ * @group Flashes.
+ */
+.flash {
+    background: rgba(0, 200, 100, .5);
+    border-radius: 1em;
+    padding: 2em;
+    color: black;
 }
 
-label {
-  display: inline-block;
-  text-align: right;
-  margin-right: .3em;
-  margin-left: 1em;
+/**
+ * @group Forms.
+ */
+.address-form {
+    width: 75%;
+    min-width: 300px;
+    margin: 0 auto;
+    overflow: auto;
 }
-
-label:first-of-type {
-  width: 90px;
-  margin-left: 0;
+form div {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1em;
 }
-
 input {
-  font: 1em sans-serif;
-  box-sizing: border-box;
-  border: 1px solid #999;
+    flex-grow: 1;
+}
+label {
+    margin-right: .25em;
+}
+label:first-child {
+    width: 10em;
+    text-align: right;
+}
+label:not(:first-child) {
+    margin-left: 1em;
+}
+input[type="submit"] {
+    float: right;
+    font-size: x-large;
 }
 
-input:focus {
-  border-color: #000;
-}
-
-.button {
-  padding-left: 90px;
-}
-
-button {
-  margin-left: .5em;
+/**
+ * @group Mobile.
+ */
+@media screen and (max-width: 500px) {
+    body {
+        max-width: unset;
+    }
+    #Masthead {
+        display: block;
+    }
+    #Masthead img {
+        border-right: none;
+        padding-right: 0;
+    }
+    .address-form {
+        width: auto;
+    }
+    form div {
+        flex-wrap: wrap;
+    }
 }
